@@ -1,8 +1,9 @@
 body {
 	font-family: "IBM Plex Sans Arabic", sans-serif !important;
-	font-weight: bold;
+	font-weight: 600;
 	line-height: 1.8;
 	color: #eee;
+	text-align: justify !important;
 }
 
 .hadith-head {
