@@ -1,3 +1,34 @@
 body {
 	font-family: "IBM Plex Sans Arabic", sans-serif !important;
+	font-weight: bold;
+	line-height: 1.8;
+	color: #eee;
+}
+
+.hadith-head {
+	display: flex;
+	align-items: center;
+	background-color: #25353a;
+	color: #47ac9a;
+}
+
+.hadith-head::after {
+	content: "#";
+	color: #435a61;
+	padding: 5px;
+	font-size: 32px;
+	visibility: hidden;
+	transition: all 0.2ms;
+	-webkit-transition: all 0.2ms;
+	-moz-transition: all 0.2ms;
+	-ms-transition: all 0.2ms;
+	-o-transition: all 0.2ms;
+}
+
+.hadith-head:hover::after {
+	visibility: visible;
+}
+
+.hadith-body {
+	background-color: #2e3031;
 }

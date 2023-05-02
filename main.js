@@ -40,7 +40,7 @@ apiFetch(
 	.then((data) => {
 		console.log(data);
 		const cardHeader = document.getElementById("cardHeader");
-		cardHeader.innerHTML = `<h5>${data.title}</h5>`;
+		cardHeader.innerHTML = `${data.title}`;
 
 		const cardBody = document.querySelector("#cardBody blockquote");
 
