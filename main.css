@@ -13,6 +13,10 @@ body {
 	color: #47ac9a;
 }
 
+.hadith-head:hover,
+.hadith-body:hover {
+}
+
 .hadith-head::after {
 	content: "#";
 	color: #435a61;
@@ -32,4 +36,8 @@ body {
 
 .hadith-body {
 	background-color: #2e3031;
+}
+
+.icon[data-color="green"] {
+	color: #47ac9a;
 }

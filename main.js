@@ -38,31 +38,70 @@ apiFetch(
 	`https://hadeethenc.com/api/v1/hadeeths/one/?language=ar&id=${RANDOM_ID}`
 )
 	.then((data) => {
-		console.log(data);
+		document.querySelector("#placeHolder").classList.remove("placeholder-wave");
 		const cardHeader = document.getElementById("cardHeader");
 		cardHeader.innerHTML = `${data.title}`;
 
-		const cardBody = document.querySelector("#cardBody blockquote");
+		const cardBody = document.querySelector("#cardBody .hadith-body");
 
-		cardBody.firstElementChild.innerHTML = `${data.hadeeth}`;
+		cardBody.firstElementChild.nextElementSibling.innerHTML = `${data.hadeeth}`;
 
-		const accordion = document.querySelector("#accordion");
+		const hadithExplain = document.querySelector("#hadithExplain");
 
-		accordion.firstElementChild.lastElementChild.firstElementChild.firstElementChild.innerHTML = `${data.explanation}`;
+		hadithExplain.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.innerHTML = `${data.explanation}`;
 
-		accordion.firstElementChild.nextElementSibling.lastElementChild.firstElementChild.firstElementChild.innerHTML =
+		const hadithHints = document.querySelector("#hadithHints");
+
+		hadithHints.firstElementChild.nextElementSibling.lastElementChild.innerHTML =
 			"";
+
 		data.hints.forEach(
 			(hint) =>
-				(accordion.firstElementChild.nextElementSibling.lastElementChild.firstElementChild.firstElementChild.innerHTML += `<li>${hint}</li>`)
-		);
-		accordion.firstElementChild.nextElementSibling.nextElementSibling.lastElementChild.firstElementChild.firstElementChild.lastElementChild.innerHTML =
-			"";
-		data.words_meanings.forEach(
-			(word_meaning) =>
-				(accordion.firstElementChild.nextElementSibling.nextElementSibling.lastElementChild.firstElementChild.firstElementChild.lastElementChild.innerHTML += `<tr><td>${word_meaning.word}</td><td>${word_meaning.meaning}</td></tr>`)
+				(hadithHints.firstElementChild.nextElementSibling.lastElementChild.innerHTML += `<li>${hint}</li>`)
 		);
 
-		accordion.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.lastElementChild.firstElementChild.innerHTML = `<p>${data.reference}</p>`;
+		const wordMeanings = document.querySelector("#wordMeanings");
+		wordMeanings.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.innerHTML =
+			"";
+
+		("");
+		data.words_meanings.forEach(
+			(word_meaning) =>
+				(wordMeanings.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.innerHTML += `<tr><td>${word_meaning.word}</td><td>${word_meaning.meaning}</td></tr>`)
+		);
+
+		const hadithReferences = document.querySelector("#hadithReferences");
+
+		hadithReferences.firstElementChild.nextElementSibling.firstElementChild.nextElementSibling = `${data.reference}`;
 	})
 	.catch((error) => console.error(error));
+
+const clipboardCheck = `<svg data-color="green" class='icon' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
+		<path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+		<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+		<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+	</svg>`;
+
+const btns = document.querySelectorAll(".clipboard");
+
+btns.forEach((btn) => {
+	new ClipboardJS(btn);
+	btn.addEventListener("click", function () {
+		const textToCopy = this.nextElementSibling.innerText;
+		// Select the text field
+		navigator.clipboard
+			.writeText(textToCopy)
+			.then(() => {
+				// Success! The text was copied to the clipboard
+				const btnPrevHTML = this.innerHTML;
+				btn.innerHTML = clipboardCheck;
+				setTimeout(() => {
+					btn.innerHTML = btnPrevHTML;
+				}, 1000);
+			})
+			.catch((err) => {
+				// Something went wrong
+				console.error("Could not copy text: ", err);
+			});
+	});
+});
